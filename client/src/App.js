@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import "./App.css";
+import { tempData } from "./tempData";
 
 function App() {
   const [data, setData] = useState(null);
   const [email, setEmail] = useState("");
+  const [rep, setRep] = useState(null);
 
   React.useEffect(() => {
     fetch("/api")
@@ -13,16 +15,123 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Submitting Name ${email}`);
+    // alert(`Submitting Name ${email}`);
+    fetch(`/getrep/${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // if (data.error) {
+        //   setData(data.error);
+        //   console.log(data.details);
+        // } else {
+        //   console.log(data);
+        //   setRep(data);
+        //   setData("displaying reputation result");
+        // }
+
+        //MH: TEMP
+        setRep(tempData);
+      });
+  };
+
+  const RenderRepData = () => {
+    const { reputation, suspicious, details } = rep;
+    const { blacklisted, domain_reputation, domain_exists } = details;
+    // console.log(
+    //   reputation,
+    //   suspicious,
+    //   blacklisted,
+    //   domain_reputation,
+    //   domain_exists
+    // );
+    return (
+      <div className="App-results flex justify-center mt-10">
+        <div className="w-6/12 max-w-md flex flex-col">
+          <h6 className="font-medium leading-tight text-base my-4 text-blue-600">
+            E-Mail Reputation Results
+          </h6>
+          <div>
+            <ul>
+              <li>
+                <span className="font-medium">Reputation: </span>
+                <span
+                  className={`
+                    font-bold
+                    ${
+                      reputation === "low"
+                        ? "text-red-700"
+                        : reputation === "medium"
+                        ? "text-yellow-400"
+                        : "text-green-700"
+                    }
+                  `}
+                >
+                  {reputation}
+                </span>
+              </li>
+              <li>
+                <span className="font-medium">Suspicious: </span>
+                <span
+                  className={`
+                    font-bold
+                    ${suspicious ? "text-red-700" : "text-green-700"}
+                  `}
+                >
+                  {suspicious ? "true" : "false"}
+                </span>
+              </li>
+              <li>
+                <span className="font-medium">Blacklisted: </span>
+                <span
+                  className={`
+                    font-bold
+                    ${blacklisted ? "text-red-700" : "text-green-700"}
+                  `}
+                >
+                  {blacklisted ? "true" : "false"}
+                </span>
+              </li>
+              {domain_exists && (
+                <li>
+                  <span className="font-medium">Domain Reputation: </span>
+                  <span
+                    className={`
+                    font-bold
+                    ${
+                      domain_reputation === "low"
+                        ? "text-red-700"
+                        : domain_reputation === "medium"
+                        ? "text-yellow-400"
+                        : "text-green-700"
+                    }
+                  `}
+                  >
+                    {domain_reputation}
+                  </span>
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const RenderRep = () => {
+    if (rep) {
+      return <RenderRepData />;
+    }
+    return <div></div>;
   };
 
   return (
     <div className="App">
-      <header className="App-header">
-        <p>{!data ? "Loading..." : data}</p>
+      <header className="App-header flex justify-center">
+        <div className="w-6/12 max-w-md my-4">
+          <p>{!data ? "Loading..." : data}</p>
+        </div>
       </header>
-      <div className="flex justify-center">
-        <div>
+      <div className="App-form flex justify-center">
+        <div className="w-6/12 max-w-md">
           <form onSubmit={handleSubmit}>
             <label
               htmlFor="email"
@@ -47,6 +156,7 @@ function App() {
           </form>
         </div>
       </div>
+      <RenderRep />
     </div>
   );
 }
