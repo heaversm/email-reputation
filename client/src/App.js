@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./App.css";
-import { tempData } from "./tempData";
 
 function App() {
   const [data, setData] = useState(null);
@@ -15,7 +14,6 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // alert(`Submitting Name ${email}`);
     fetch(`/getrep/${email}`)
       .then((res) => res.json())
       .then((data) => {
@@ -23,13 +21,9 @@ function App() {
           setData(data.error);
           console.log(data.details);
         } else {
-          console.log(data);
           setRep(data);
-          setData("displaying reputation result");
+          setData("Displaying Reputation Result");
         }
-
-        //MH: TEMP
-        //setRep(tempData);
       });
   };
 
@@ -43,13 +37,7 @@ function App() {
       malicious_activity,
       spam,
     } = details;
-    // console.log(
-    //   reputation,
-    //   suspicious,
-    //   blacklisted,
-    //   domain_reputation,
-    //   domain_exists
-    // );
+
     return (
       <div className="App-results flex justify-center mt-10">
         <div className="w-6/12 max-w-md flex flex-col">

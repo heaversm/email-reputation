@@ -1,5 +1,5 @@
 export const tempData = {
-  email: "mheavers@mozilla.com",
+  email: "email@address.com",
   reputation: "medium",
   suspicious: false,
   references: 0,
