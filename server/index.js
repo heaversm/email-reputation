@@ -6,7 +6,7 @@ const express = require("express");
 
 const PORT = process.env.PORT || 3001;
 
-const API_KEY = dotenv.parsed.API_KEY;
+const API_KEY = process.env.API_KEY;
 
 const app = express();
 app.use(express.static(path.resolve(__dirname, "../client/build")));
