@@ -19,23 +19,30 @@ function App() {
     fetch(`/getrep/${email}`)
       .then((res) => res.json())
       .then((data) => {
-        // if (data.error) {
-        //   setData(data.error);
-        //   console.log(data.details);
-        // } else {
-        //   console.log(data);
-        //   setRep(data);
-        //   setData("displaying reputation result");
-        // }
+        if (data.error) {
+          setData(data.error);
+          console.log(data.details);
+        } else {
+          console.log(data);
+          setRep(data);
+          setData("displaying reputation result");
+        }
 
         //MH: TEMP
-        setRep(tempData);
+        //setRep(tempData);
       });
   };
 
   const RenderRepData = () => {
     const { reputation, suspicious, details } = rep;
-    const { blacklisted, domain_reputation, domain_exists } = details;
+    const {
+      blacklisted,
+      domain_reputation,
+      domain_exists,
+      data_breach,
+      malicious_activity,
+      spam,
+    } = details;
     // console.log(
     //   reputation,
     //   suspicious,
@@ -88,6 +95,39 @@ function App() {
                   `}
                 >
                   {blacklisted ? "true" : "false"}
+                </span>
+              </li>
+              <li>
+                <span className="font-medium">Data Breach: </span>
+                <span
+                  className={`
+                    font-bold
+                    ${data_breach ? "text-red-700" : "text-green-700"}
+                  `}
+                >
+                  {data_breach ? "true" : "false"}
+                </span>
+              </li>
+              <li>
+                <span className="font-medium">Malicious Activity: </span>
+                <span
+                  className={`
+                    font-bold
+                    ${malicious_activity ? "text-red-700" : "text-green-700"}
+                  `}
+                >
+                  {malicious_activity ? "true" : "false"}
+                </span>
+              </li>
+              <li>
+                <span className="font-medium">Spam: </span>
+                <span
+                  className={`
+                    font-bold
+                    ${spam ? "text-red-700" : "text-green-700"}
+                  `}
+                >
+                  {spam ? "true" : "false"}
                 </span>
               </li>
               {domain_exists && (
